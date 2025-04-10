@@ -2,7 +2,12 @@ package com.example.CadastroFuncionario.service;
 
 import com.example.CadastroFuncionario.entities.Funcionarios;
 import com.example.CadastroFuncionario.repositories.FuncionarioRepository;
+import com.example.CadastroFuncionario.service.services.DatabaseException;
+import com.example.CadastroFuncionario.service.services.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import javax.swing.text.html.parser.Entity;
@@ -20,7 +25,7 @@ public class FuncionarioService {
 
     public Funcionarios findById(Long id) {
         Optional<Funcionarios> obj = repository.findById(id);
-        return obj.get();
+        return obj.orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
     public Funcionarios insert(Funcionarios obj) {
@@ -28,13 +33,26 @@ public class FuncionarioService {
     }
 
     public void delete(Long id) {
-        repository.deleteById(id);
+        try {
+            repository.deleteById(id);
+        }
+        catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundException(id);
+        }
+        catch (DataIntegrityViolationException e) {
+            throw new DatabaseException(e.getMessage());
+        }
     }
 
     public Funcionarios update(Long id, Funcionarios obj) {
-        Funcionarios entity = repository.getReferenceById(id);
-        updateData(entity, obj);
-        return repository.save(entity);
+        try {
+            Funcionarios entity = repository.getReferenceById(id);
+            updateData(entity, obj);
+            return repository.save(entity);
+        }
+        catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException(id);
+        }
     }
 
     private void updateData(Funcionarios entity, Funcionarios obj) {
