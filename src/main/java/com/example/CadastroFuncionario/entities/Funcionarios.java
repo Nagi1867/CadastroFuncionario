@@ -1,5 +1,6 @@
 package com.example.CadastroFuncionario.entities;
 
+import com.example.CadastroFuncionario.enums.Status;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -18,11 +19,11 @@ public class Funcionarios implements Serializable {
 
     public Funcionarios() {}
 
-    public Funcionarios(Long id, String nome, String identificacao, Integer status) {
+    public Funcionarios(Long id, String nome, String identificacao, Status status) {
         this.id = id;
         this.nome = nome;
         this.identificacao = identificacao;
-        this.status = status;
+        setStatus(status);
     }
 
     public Long getId() {
@@ -49,12 +50,14 @@ public class Funcionarios implements Serializable {
         this.identificacao = identificacao;
     }
 
-    public Integer getStatus() {
-        return status;
+    public Status getStatus() {
+        return Status.valueOf(status);
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setStatus(Status status) {
+        if(status != null) {
+            this.status = status.getCode();
+        }
     }
 
     @Override

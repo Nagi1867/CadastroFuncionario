@@ -1,6 +1,7 @@
 package com.example.CadastroFuncionario.config;
 
 import com.example.CadastroFuncionario.entities.Funcionarios;
+import com.example.CadastroFuncionario.enums.Status;
 import com.example.CadastroFuncionario.repositories.FuncionarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -16,7 +17,7 @@ public class TestConfig implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        Funcionarios funcionario = new Funcionarios(null, "Giuseppi", "94948", 1);
+        Funcionarios funcionario = new Funcionarios(null, "Giuseppi", "94948", Status.ATIVO);
         repository.save(funcionario);
     }
 }
