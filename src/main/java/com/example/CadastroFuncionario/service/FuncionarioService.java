@@ -21,4 +21,8 @@ public class FuncionarioService {
         Optional<Funcionarios> obj = repository.findById(id);
         return obj.get();
     }
+
+    public Funcionarios insert(Funcionarios obj) {
+        return repository.save(obj);
+    }
 }
