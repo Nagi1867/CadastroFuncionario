@@ -5,6 +5,7 @@ import com.example.CadastroFuncionario.repositories.FuncionarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.parser.Entity;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,5 +29,17 @@ public class FuncionarioService {
 
     public void delete(Long id) {
         repository.deleteById(id);
+    }
+
+    public Funcionarios update(Long id, Funcionarios obj) {
+        Funcionarios entity = repository.getReferenceById(id);
+        updateData(entity, obj);
+        return repository.save(entity);
+    }
+
+    private void updateData(Funcionarios entity, Funcionarios obj) {
+        entity.setNome(obj.getNome());
+        entity.setIdentificacao(obj.getIdentificacao());
+        entity.setStatus(obj.getStatus());
     }
 }

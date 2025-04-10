@@ -40,4 +40,10 @@ public class FuncionarioResource {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<Funcionarios> update(@PathVariable Long id, @RequestBody Funcionarios obj) {
+        obj = service.update(id, obj);
+        return ResponseEntity.ok().body(obj);
+    }
 }
